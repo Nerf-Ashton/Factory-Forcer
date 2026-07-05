@@ -1,0 +1,82 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:enchanting_table",
+    "minecraft:anvil",
+    "minecraft:chipped_anvil",
+    "minecraft:damaged_anvil",
+    "minecraft:grindstone",
+    "minecraft:blast_furnace",
+    "minecraft:smoker",
+    "minecraft:lectern",
+    "minecraft:smithing_table",
+    "minecraft:fletching_table",
+    "minecraft:loom",
+    "minecraft:cartography_table",
+    "minecraft:brewing_stand",
+    {
+      "id": "mekanism:metallurgic_infuser",
+      "required": false
+    },
+    {
+      "id": "mekanism:heat_generator",
+      "required": false
+    },
+    {
+      "id": "mekanism:enrichment_chamber",
+      "required": false
+    },
+    {
+      "id": "mekanism:electrolytic_separator",
+      "required": false
+    },
+    {
+      "id": "mekanism:crusher",
+      "required": false
+    },
+    {
+      "id": "mekanism:osmium_compressor",
+      "required": false
+    },
+    {
+      "id": "mekanism:purification_chamber",
+      "required": false
+    },
+    {
+      "id": "mekanism:fission_reactor_casing",
+      "required": false
+    },
+    {
+      "id": "create:mechanical_press",
+      "required": false
+    },
+    {
+      "id": "create:mechanical_mixer",
+      "required": false
+    },
+    {
+      "id": "create:mechanical_press",
+      "required": false
+    },
+    {
+      "id": "create:encased_fan",
+      "required": false
+    },
+    {
+      "id": "create:mechanical_crafter",
+      "required": false
+    },
+    {
+      "id": "create:packager",
+      "required": false
+    },
+    {
+      "id": "create:stock_ticker",
+      "required": false
+    },
+    {
+      "id": "create:steam_engine",
+      "required": false
+    }
+  ]
+}
