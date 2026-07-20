@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
@@ -18,22 +19,24 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(FactoryForcer.MOD_ID)
-public class FactoryForcer
-{
+public class FactoryForcer {
     public static final String MOD_ID = "factory_forcer";
 
-    /*public FactoryForcer(FMLJavaModLoadingContext context)
+    public FactoryForcer(FMLJavaModLoadingContext context)
     {
-        MinecraftForge.EVENT_BUS.register(this);
-    }*/
+        context.registerConfig(ModConfig.Type.COMMON, FactoryForcerConfig.SPEC);
+    }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class FactoryForcerEventHandler {
-        public static final TagKey<Block> INDOOR_ONLY = BlockTags.create(new ResourceLocation(MOD_ID, "indoor_only"));
+        public static final TagKey<Block> INDOOR_ONLY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "indoor_only"));
+        public static final TagKey<Block> NATURE_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "natural"));
 
         @SubscribeEvent
         public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
@@ -54,15 +57,21 @@ public class FactoryForcer
             }
 
             if (event.getPlacedBlock().is(INDOOR_ONLY)) {
+                BlockPos belowPos = pos.below();
+                BlockState belowState = level.getBlockState(belowPos);
+
+                if (belowState.is(NATURE_BLOCKS) && FactoryForcerConfig.REQUIRE_FOUNDATION.get()) {
+                    cancelPlacement(event, player, pos, level, "message.factory_forcer.foundation_warning");
+                    return;
+                }
+
                 int roofHeight = level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ());
                 if (pos.getY() >= roofHeight - 1) {
-                    event.setCanceled(true);
-
-                    level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
-                    player.displayClientMessage(Component.translatable("message.factory_forcer.warning"), true);
+                    cancelPlacement(event, player, pos, level, "message.factory_forcer.outdoor_warning");
                 }
             }
         }
+
         @SubscribeEvent
         public static void onBlockBreak(BlockEvent.BreakEvent event) {
             if (!(event.getLevel() instanceof Level level) || level.isClientSide()) {
@@ -97,5 +106,13 @@ public class FactoryForcer
                 }
             }
         }
+    }
+
+    private static void cancelPlacement(BlockEvent.EntityPlaceEvent event, Player player, BlockPos pos, Level level, String message) {
+        event.setCanceled(true);
+        player.setItemInHand(InteractionHand.MAIN_HAND, player.getMainHandItem().copy());
+        player.setItemInHand(InteractionHand.OFF_HAND, player.getOffhandItem().copy());
+        level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+        player.displayClientMessage(Component.translatable(message), true);
     }
 }

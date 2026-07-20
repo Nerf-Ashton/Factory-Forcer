@@ -1,3 +1,4 @@
 {
-  "message.factory_forcer.warning": "§c§lMachines must be placed indoors!"
+  "message.factory_forcer.outdoor_warning": "§c§lMachines must be placed indoors!",
+  "message.factory_forcer.foundation_warning": "§c§lMachines must be placed on solid ground!"
 }
