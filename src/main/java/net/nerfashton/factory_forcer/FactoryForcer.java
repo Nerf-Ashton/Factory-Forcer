@@ -15,25 +15,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 @Mod(FactoryForcer.MOD_ID)
 public class FactoryForcer {
     public static final String MOD_ID = "factory_forcer";
 
-    public FactoryForcer(FMLJavaModLoadingContext context)
+    public FactoryForcer(IEventBus modEventBus, ModContainer modContainer)
     {
-        context.registerConfig(ModConfig.Type.COMMON, FactoryForcerConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, FactoryForcerConfig.SPEC);
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    @EventBusSubscriber
     public static class FactoryForcerEventHandler {
         public static final TagKey<Block> INDOOR_ONLY = BlockTags.create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "indoor_only"));
         public static final TagKey<Block> NATURE_BLOCKS = BlockTags.create(ResourceLocation.fromNamespaceAndPath(MOD_ID, "natural"));

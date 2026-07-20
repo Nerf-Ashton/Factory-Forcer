@@ -1,14 +1,15 @@
 package net.nerfashton.factory_forcer;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForgeConfig;
 
-@Mod.EventBusSubscriber(modid = FactoryForcer.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FactoryForcerConfig {
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec SPEC;
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.BooleanValue REQUIRE_FOUNDATION;
+    public static final ModConfigSpec.BooleanValue REQUIRE_FOUNDATION;
 
     static {
         BUILDER.push("Placement Rules");
